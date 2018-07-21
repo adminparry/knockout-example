@@ -1,0 +1,78 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Untitled Document</title>
+    <script src="../node_modules/knockout/build/output/knockout-latest.js"></script>
+	<style>
+		.lightBlue{
+			color: blue;
+		}
+	</style>
+</head>
+
+<body >
+	<div data-bind="with:linked">
+		 <ul  data-bind="foreach:list">
+	        <li data-bind="attr:{age:name,class:$root.className(name)},text:name,visible: $root.className(name),click:$root.fuck ">
+	        	
+	        </li>
+	    </ul>
+	</div>
+   
+    <ul  data-bind="with:hash">
+    	<li >年龄：<span data-bind="text:name,click:$root.fuck"></span></li>
+    	<li>姓名：<span data-bind="text:$data.age"></span></li>
+    </ul>
+</body>
+<script>
+function ViewModel(){
+
+	this.list = ko.observableArray();
+	this.obj = ko.observable();
+	this.name = ko.observable();
+	this.age = ko.observable();
+
+	this.linked = {
+		list:this.list,
+		obj:this.obj,
+	}
+	this.hash = {
+		name:this.name,
+		age:this.age,
+	}
+
+}
+ViewModel.prototype.className = function(name){
+	return name > .5 ? 'lightBlue' : ''
+}
+
+ViewModel.prototype.fuck = function(item){
+	console.log(this);
+
+	if(this.name){
+		alert(this.name)
+	}else{
+		alert(this.name && this.name())
+	}
+	
+}
+
+var vm = new ViewModel;
+
+console.log(vm.list())
+
+
+ko.applyBindings(vm);
+
+vm.timer = setInterval(function() {
+	
+    var a = vm.linked.list.push({ name: Math.random() });
+    if(a >= 20){
+    	clearInterval(vm.timer);
+    }
+}, 1000)
+</script>
+
+</html>

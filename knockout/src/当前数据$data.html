@@ -1,0 +1,57 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Untitled Document</title>
+    <script src="../node_modules/knockout/build/output/knockout-latest.js"></script>
+	<style>
+		.lightBlue{
+			color: blue;
+		}
+	</style>
+</head>
+
+<body>
+    <ul id="ko-data" data-bind="foreach:list">
+        <li data-bind="attr:{age:name,class:data.className(name)},text:name,visible: data.className(name) "></li>
+    </ul>
+    <ul id="ko-ViewModel">
+    	<li >年龄：<span data-bind="text:name,click:data.fuck($data)"></span></li>
+    	<li>姓名：<span data-bind="text:age"></span></li>
+    </ul>
+</body>
+<script>
+var data = {
+
+    list: ko.observableArray([]),
+
+    obj:ko.observable(0),
+
+    className:function(name){
+    	return name > .5 ? 'lightBlue' : ''
+    },
+    fuck:function(item){
+    	return function(){
+    		alert(item.name())
+    	}
+    }
+}
+function ViewModel(){
+	this.name = ko.observable('bob');
+
+}
+ViewModel.prototype.age = ko.observable(33);
+
+ko.applyBindings(data,document.getElementById('ko-data'));
+ko.applyBindings(new ViewModel,document.getElementById('ko-ViewModel'));
+
+data.timer = setInterval(function() {
+    var a = data.list.push({ name: Math.random() });
+    if(a >= 20){
+    	clearInterval(data.timer);
+    }
+}, 1000)
+</script>
+
+</html>

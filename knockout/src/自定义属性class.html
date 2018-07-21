@@ -1,0 +1,32 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Untitled Document</title>
+    <script src="../node_modules/knockout/build/output/knockout-latest.js"></script>
+</head>
+
+<body>
+    <ul data-bind="foreach:list">
+        <li data-bind="attr:{age:name},text:name"></li>
+    </ul>
+</body>
+<script>
+var data = {
+
+    list: ko.observableArray([]),
+
+}
+
+ko.applyBindings(data);
+
+data.timer = setInterval(function() {
+    var a = data.list.push({ name: Math.random() });
+    if(a >= 20){
+    	clearInterval(data.timer);
+    }
+}, 1000)
+</script>
+
+</html>

@@ -1,0 +1,64 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Untitled Document</title>
+    <script src="../node_modules/knockout/build/output/knockout-latest.js"></script>
+	<style>
+		.lightBlue{
+			color: blue;
+		}
+	</style>
+</head>
+
+<body >
+	<div data-bind="with:linked">
+		 <ul  data-bind="foreach:list">
+	        <li data-bind="attr:{age:name,class:$parent.className(name)},text:name,visible: $parent.className(name) "></li>
+	    </ul>
+	</div>
+   
+    <ul  data-bind="with:hash">
+    	<li >年龄：<span data-bind="text:name,click:$data.fuck($data.name)"></span></li>
+    	<li>姓名：<span data-bind="text:$data.age"></span></li>
+    </ul>
+</body>
+<script>
+var data = {
+	linked:{
+		list: ko.observableArray([]),
+
+    	obj:ko.observable(0),
+
+    	className:function(name){
+	    	return name > .5 ? 'lightBlue' : ''
+	    },
+	},
+    
+	hash:{
+		name:ko.observable('bob'),
+		age:ko.observable('33'),
+		fuck:function(item){
+	    	return function(){
+	    		alert(item.name())
+	    	}
+	    }
+	}
+    
+    
+}
+
+ko.applyBindings(data);
+
+
+data.timer = setInterval(function() {
+	
+    var a = data.linked.list.push({ name: Math.random() });
+    if(a >= 20){
+    	clearInterval(data.timer);
+    }
+}, 1000)
+</script>
+
+</html>

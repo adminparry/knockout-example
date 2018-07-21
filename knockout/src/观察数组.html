@@ -1,0 +1,41 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Untitled Document</title>
+    <script src="../node_modules/knockout/build/output/knockout-latest.js"></script>
+	<style>
+		.lightBlue{
+			color: blue;
+		}
+	</style>
+</head>
+
+<body>
+    <ul data-bind="foreach:list">
+        <li data-bind="attr:{age:name,class:data.className(name)},visible: data.className(name) ">
+           <i data-bind="text:$index"></i> <span data-bind="text:name"></span></li>
+    </ul>
+</body>
+<script>
+var data = {
+
+    list: ko.observableArray([]),
+
+    className:function(name){
+    	return name > .5 ? 'lightBlue' : ''
+    }
+}
+
+ko.applyBindings(data);
+
+data.timer = setInterval(function() {
+    var a = data.list.push({ name: Math.random() });
+    if(a >= 20){
+    	clearInterval(data.timer);
+    }
+}, 1000)
+</script>
+
+</html>
